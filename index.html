@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vad är Claude Code?</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --bg-soft: #161920;
+    --card: #1b1f28;
+    --border: #2a2f3a;
+    --text: #e7e9ee;
+    --text-dim: #9aa3b2;
+    --accent: #d97757;
+    --accent-soft: rgba(217, 119, 87, 0.15);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+  header.hero {
+    padding: 96px 0 72px;
+    background: radial-gradient(circle at 20% 20%, var(--accent-soft), transparent 60%);
+    border-bottom: 1px solid var(--border);
+  }
+  .eyebrow {
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    margin-bottom: 16px;
+  }
+  h1 {
+    font-size: 2.6rem;
+    margin: 0 0 16px;
+    line-height: 1.15;
+  }
+  .lead {
+    font-size: 1.15rem;
+    color: var(--text-dim);
+    max-width: 600px;
+  }
+
+  main section {
+    padding: 64px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  main section:last-of-type { border-bottom: none; }
+
+  h2 {
+    font-size: 1.6rem;
+    margin: 0 0 24px;
+  }
+  p { color: var(--text-dim); margin: 0 0 16px; }
+
+  .steps {
+    display: grid;
+    gap: 16px;
+  }
+  .step {
+    display: flex;
+    gap: 20px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    align-items: flex-start;
+  }
+  .step .num {
+    flex: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+  }
+  .step h3 {
+    margin: 0 0 6px;
+    font-size: 1.05rem;
+    color: var(--text);
+  }
+  .step p { margin: 0; }
+
+  .grid-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .card h3 {
+    margin: 0 0 8px;
+    font-size: 1rem;
+    color: var(--text);
+  }
+  .card p { margin: 0; font-size: 0.95rem; }
+
+  code {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2px 6px;
+    font-size: 0.9em;
+    color: var(--accent);
+  }
+
+  footer {
+    padding: 48px 0 80px;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Introduktion</div>
+    <h1>Hur fungerar Claude Code?</h1>
+    <p class="lead">
+      Claude Code är ett kommandoradsverktyg från Anthropic som låter AI-modellen Claude
+      läsa, skriva och köra kod direkt i dina egna projekt — som en kollega som kan
+      programmera, men som du styr via vanligt språk.
+    </p>
+  </div>
+</header>
+
+<main>
+  <section class="wrap">
+    <h2>Vad är Claude Code?</h2>
+    <p>
+      Istället för att bara chatta med en AI och klistra in kod manuellt, kör Claude Code
+      i din terminal (eller i en app) och jobbar direkt mot dina filer. Du beskriver vad du
+      vill ha gjort — "lägg till en login-sida", "fixa den här buggen", "skriv tester" — och
+      Claude utför jobbet steg för steg.
+    </p>
+    <p>
+      Det är byggt för riktiga utvecklingsprojekt: det förstår projektstruktur, kan söka i
+      kodbasen, köra terminalkommandon och arbeta med Git — allt med din tillåtelse.
+    </p>
+  </section>
+
+  <section class="wrap">
+    <h2>Så går en uppgift till</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="num">1</div>
+        <div>
+          <h3>Du beskriver vad du vill</h3>
+          <p>I vanligt språk, t.ex. "skapa en enkel kontaktformulär-sida" eller "hitta varför testerna failar".</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <div>
+          <h3>Claude utforskar och planerar</h3>
+          <p>Den läser relevanta filer, söker i koden och bygger upp en förståelse för projektet innan den agerar.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <div>
+          <h3>Claude använder verktyg</h3>
+          <p>Den kan skriva och redigera filer, köra kommandon i terminalen, köra tester och använda Git — steg för steg.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num">4</div>
+        <div>
+          <h3>Du granskar och godkänner</h3>
+          <p>Känsliga eller svåra att ångra steg (som att skicka kod eller radera filer) kräver ditt godkännande.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num">5</div>
+        <div>
+          <h3>Resultatet levereras</h3>
+          <p>Du får fungerande kod, en förklaring av vad som gjorts, och kan be om justeringar direkt.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <h2>Vad kan man använda det till?</h2>
+    <div class="grid-cards">
+      <div class="card">
+        <h3>Bygga nya funktioner</h3>
+        <p>Beskriv funktionen, Claude skriver koden i ditt projekts stil och struktur.</p>
+      </div>
+      <div class="card">
+        <h3>Hitta och fixa buggar</h3>
+        <p>Claude kan läsa felmeddelanden, söka i koden och föreslå eller göra en fix.</p>
+      </div>
+      <div class="card">
+        <h3>Förstå okänd kod</h3>
+        <p>Be Claude förklara hur en fil eller ett system hänger ihop innan du ändrar något.</p>
+      </div>
+      <div class="card">
+        <h3>Skriva tester &amp; dokumentation</h3>
+        <p>Automatisera det tråkiga arbetet som annars ofta blir bortprioriterat.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <h2>Hur kommer man igång?</h2>
+    <p>
+      Claude Code installeras som ett kommandoradsverktyg och körs i mappen för ditt projekt
+      med kommandot <code>claude</code>. Därifrån skriver du helt enkelt vad du vill ha gjort.
+    </p>
+    <p>
+      Den här sidan är själv ett exempel — den skapades med hjälp av Claude Code.
+    </p>
+  </section>
+</main>
+
+<footer class="wrap">
+  <p>
+    Läs mer i den officiella dokumentationen:
+    <a href="https://docs.claude.com/en/docs/claude-code/overview" target="_blank" rel="noopener">docs.claude.com/claude-code</a>
+  </p>
+</footer>
+
+</body>
+</html>
