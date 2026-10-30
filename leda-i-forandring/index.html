@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leda i ständig förändring</title>
+<meta name="description" content="En guide och ett arbetsblad för dig som leder ett team när riktning, förutsättningar eller prioriteringar förändras. Från Lorensbergs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --grafit: #2c2e3f;
+    --grafit-75: #61636f;
+    --grafit-50: #95969f;
+    --grafit-25: #cacbcf;
+    --rosa: #f74c99;
+    --rosa-75: #fc7cb4;
+    --rosa-25: #ffd4e6;
+    --orange: #ffa700;
+    --orange-25: #ffeaca;
+    --gron: #41a153;
+    --gron-25: #d2e7d5;
+    --lila: #895eca;
+    --lila-25: #e1d7f2;
+    --bla: #368ae8;
+    --bla-25: #d1e4fa;
+    --vit: #ffffff;
+    --yta: #f6f6f8;
+    --rosa-text: #c92a72;
+    --radius: 28px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--vit);
+    color: var(--grafit);
+    font-family: "Montserrat", Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+  h1, h2, h3, h4 { margin: 0; line-height: 1.2; font-weight: 700; }
+  p { margin: 0 0 14px; }
+  .rosa { color: var(--rosa); }
+  .dim { color: var(--grafit-75); }
+  a { color: var(--rosa-text); }
+  /* ---------- Navigering ---------- */
+  .topbar {
+    position: sticky; top: 0; z-index: 20;
+    background: rgba(44, 46, 63, 0.96);
+    backdrop-filter: blur(6px);
+  }
+  .topbar .wrap { display: flex; align-items: center; gap: 24px; height: 64px; }
+  .logo { display: flex; align-items: center; gap: 6px; color: var(--vit); text-decoration: none; font-weight: 600; letter-spacing: 0.06em; font-size: 15px; white-space: nowrap; }
+  .logo svg { width: 20px; height: 20px; margin-top: -10px; }
+  .nav { display: flex; gap: 4px; overflow-x: auto; margin-left: auto; scrollbar-width: none; }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav a {
+    color: var(--grafit-25); text-decoration: none; font-size: 13px; font-weight: 500;
+    padding: 6px 14px; border-radius: 999px; white-space: nowrap; transition: background .2s, color .2s;
+  }
+  .nav a:hover, .nav a.active { background: rgba(255,255,255,0.1); color: var(--vit); }
+
+  /* ---------- Hero ---------- */
+  .hero { background: var(--grafit); color: var(--vit); position: relative; overflow: hidden; }
+  .hero .wrap { padding-top: 88px; padding-bottom: 96px; position: relative; z-index: 2; }
+  .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--rosa); margin-bottom: 18px; }
+  .hero h1 { font-size: clamp(40px, 7vw, 72px); font-weight: 800; letter-spacing: -0.01em; max-width: 640px; }
+  .hero .lead { font-size: clamp(17px, 2vw, 20px); color: var(--grafit-25); max-width: 560px; margin: 24px 0 0; }
+  .hero .quote {
+    margin-top: 36px; display: inline-block; background: rgba(255,255,255,0.07);
+    border-radius: 0 var(--radius) 0 var(--radius); padding: 18px 26px; max-width: 520px;
+  }
+  .hero .quote small { display: block; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--grafit-50); font-weight: 700; margin-bottom: 4px; }
+  .hero .quote span { font-size: 18px; font-weight: 600; }
+  .hero-blocks { position: absolute; right: -40px; top: 40px; z-index: 1; opacity: 0.95; }
+  .shortcuts { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 36px; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 8px; border: 0; cursor: pointer;
+    font-family: inherit; font-size: 14px; font-weight: 600; text-decoration: none;
+    padding: 12px 22px; border-radius: 999px; transition: transform .15s, background .2s;
+  }
+  .pill:hover { transform: translateY(-1px); }
+  .pill-rosa { background: var(--rosa); color: var(--vit); }
+  .pill-ghost { background: rgba(255,255,255,0.1); color: var(--vit); }
+  .pill-grafit { background: var(--grafit); color: var(--vit); }
+  .pill-ljus { background: var(--yta); color: var(--grafit); }
+  .pill-ljus:hover { background: var(--grafit-25); }
+
+  /* ---------- Byggstenar ---------- */
+  .blocks { display: grid; gap: 6px; }
+  .b { width: var(--s, 56px); height: var(--s, 56px); }
+  .b.circle { border-radius: 50%; }
+  .b.leaf { border-radius: 100% 0 100% 0; }
+  .b.leaf2 { border-radius: 0 100% 0 100%; }
+  .b.q1 { border-radius: 100% 0 0 0; }
+  .b.q2 { border-radius: 0 100% 0 0; }
+  .b.q3 { border-radius: 0 0 100% 0; }
+  .b.q4 { border-radius: 0 0 0 100%; }
+  .b.top { border-radius: 50% 50% 0 0 / 50% 50% 0 0; }
+  .b.none { visibility: hidden; }
+  .c-g { background: var(--gron); } .c-r { background: var(--rosa); } .c-o { background: var(--orange); }
+  .c-l { background: var(--lila); } .c-b { background: var(--bla); } .c-t { background: rgba(255,255,255,0.09); }
+
+  /* ---------- Sektioner ---------- */
+  section.part { padding: 96px 0; scroll-margin-top: 64px; }
+  section.part.alt { background: var(--yta); }
+  .part-head { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 44px; max-width: 760px; }
+  .num { font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--rosa-text); }
+  .part-head h2 { font-size: clamp(28px, 4vw, 40px); font-weight: 800; }
+  .part-head p { font-size: 18px; color: var(--grafit-75); margin: 8px 0 0; }
+
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { background: var(--vit); border-radius: var(--radius); padding: 32px; }
+  .alt .card { background: var(--vit); }
+  section:not(.alt) .card.soft { background: var(--yta); }
+  .card h3 { font-size: 20px; margin-bottom: 14px; }
+  .label { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 14px; }
+  .leaf-card { border-radius: 0 var(--radius) 0 var(--radius); }
+  ul.arrows { list-style: none; margin: 0; padding: 0; }
+  ul.arrows li { position: relative; padding-left: 26px; margin-bottom: 10px; }
+  ul.arrows li::before {
+    content: ""; position: absolute; left: 0; top: 8px; width: 12px; height: 12px;
+    background: var(--rosa); border-radius: 100% 0 100% 0;
+  }
+  ul.arrows.g li::before { background: var(--gron); }
+  ul.arrows.o li::before { background: var(--orange); }
+  ul.arrows.l li::before { background: var(--lila); }
+  ul.arrows.bl li::before { background: var(--bla); }
+  ul.arrows.t li::before { background: var(--grafit-50); }
+
+  /* Sortera */
+  .sort { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px; }
+  .sort .card { color: var(--vit); display: flex; flex-direction: column; }
+  .sort .card h3 { font-size: 22px; margin-bottom: 10px; }
+  .sort .card .say { margin-top: auto; padding-top: 18px; font-style: italic; font-weight: 500; opacity: .95; }
+  .s-fast { background: var(--grafit) !important; border-radius: var(--radius) 0 var(--radius) var(--radius); }
+  .s-open { background: var(--rosa) !important; }
+  .s-unknown { background: var(--orange) !important; color: var(--grafit) !important; border-radius: var(--radius) var(--radius) 0 var(--radius); }
+
+  .callout {
+    margin-top: 28px; background: var(--grafit); color: var(--vit); border-radius: var(--radius);
+    padding: 36px; display: grid; grid-template-columns: 1.1fr 1fr 1fr; gap: 28px; align-items: start;
+  }
+  .callout .label { color: var(--rosa); }
+  .callout h3 { font-size: 22px; margin-bottom: 6px; }
+  .callout em { color: var(--grafit-25); display: block; margin-bottom: 10px; }
+  .callout p { color: var(--grafit-25); margin: 0; }
+
+  /* Principer */
+  .principle { position: relative; overflow: hidden; }
+  .principle .big { font-size: 64px; font-weight: 800; line-height: 1; margin-bottom: 18px; }
+  .p1 .big { color: var(--rosa); } .p2 .big { color: var(--orange); } .p3 .big { color: var(--lila); }
+  .principle p.intro { color: var(--grafit-75); font-weight: 500; }
+
+  .pockets { margin-top: 20px; display: grid; grid-template-columns: 1fr 1.3fr; gap: 20px; }
+  .pockets .card.dark { background: var(--grafit); color: var(--vit); }
+  .pockets .card.dark p { color: var(--grafit-25); }
+
+  .ladder { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 18px; border-radius: 999px; overflow: hidden; }
+  .ladder div { padding: 14px 16px; text-align: center; font-size: 14px; }
+  .ladder div strong { display: block; font-size: 15px; }
+  .ladder div small { color: inherit; opacity: .85; font-size: 12px; }
+  .ladder .l1 { background: var(--grafit-25); }
+  .ladder .l2 { background: var(--rosa-25); }
+  .ladder .l3 { background: var(--rosa-75); color: var(--vit); }
+  .ladder .l4 { background: var(--rosa); color: var(--vit); }
+  /* Före under efter */
+  .phase-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+  .phase-tabs button { font-family: inherit; }
+  .phase-tabs button[aria-selected="true"] { background: var(--grafit); color: var(--vit); }
+  .phase { display: none; }
+  .phase.show { display: grid; grid-template-columns: 1fr 1.4fr; gap: 20px; }
+  .phase .intro-card { color: var(--vit); }
+  .phase .intro-card h3 { font-size: 30px; }
+  .phase .intro-card p { opacity: .92; }
+  .ph-fore .intro-card { background: var(--gron); }
+  .ph-under .intro-card { background: var(--lila); }
+  .ph-efter .intro-card { background: var(--bla); }
+
+  .conseq { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 18px; }
+  .conseq div { background: var(--yta); border-radius: 22px; padding: 20px; }
+  .alt .conseq div { background: var(--vit); }
+  .conseq strong { display: block; margin-bottom: 6px; }
+  .conseq span { font-size: 14px; color: var(--grafit-75); }
+
+  /* Fallgropar */
+  .pit { display: grid; grid-template-columns: 1fr 1.4fr 1.4fr; gap: 0; background: var(--vit); border-radius: 22px; overflow: hidden; margin-bottom: 12px; }
+  .pit > div { padding: 20px 24px; }
+  .pit .name { font-weight: 700; background: var(--grafit); color: var(--vit); display: flex; align-items: center; gap: 12px; }
+  .pit .name i { flex: none; width: 14px; height: 14px; border-radius: 100% 0 100% 0; background: var(--rosa); }
+  .pit .move { background: var(--rosa-25); }
+  .pit-head { display: grid; grid-template-columns: 1fr 1.4fr 1.4fr; font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--grafit-75); padding: 0 24px 10px; }
+
+  .steps5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 24px; }
+  .step5 { background: var(--vit); border-radius: 22px; padding: 22px; position: relative; }
+  .step5 .n { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; color: var(--vit); font-weight: 700; margin-bottom: 14px; }
+  .step5 h4 { font-size: 17px; margin-bottom: 8px; }
+  .step5 p { font-style: italic; color: var(--grafit-75); font-size: 14px; margin: 0; }
+
+  /* Frågor */
+  .q-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+  .q-tabs button[aria-selected="true"] { background: var(--rosa); color: var(--vit); }
+  .q-panel { display: none; }
+  .q-panel.show { display: block; }
+  .q-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .q-item { background: var(--yta); border-radius: 0 22px 0 22px; padding: 20px 22px; font-weight: 500; }
+  .q-hint { margin-top: 16px; color: var(--grafit-75); font-size: 15px; }
+  .random-q { margin-top: 28px; background: var(--grafit); color: var(--vit); border-radius: var(--radius); padding: 32px; display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+  .random-q p { margin: 0; font-size: 20px; font-weight: 600; flex: 1 1 320px; }
+  .random-q small { display: block; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--rosa); font-weight: 700; margin-bottom: 6px; }
+
+  /* Spiral */
+  .spiral { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; align-items: end; }
+  .spiral div { border-radius: 22px 22px 0 0; color: var(--vit); padding: 18px 14px; font-weight: 700; font-size: 15px; display: flex; flex-direction: column; justify-content: flex-start; }
+  .spiral div small { font-weight: 500; font-size: 13px; opacity: .92; margin-top: 6px; }
+
+  /* Checklista */
+  .checklist { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .check {
+    display: flex; gap: 14px; align-items: flex-start; background: var(--vit); border-radius: 18px;
+    padding: 16px 18px; cursor: pointer; transition: background .2s;
+  }
+  .check input { position: absolute; opacity: 0; pointer-events: none; }
+  .check .box { flex: none; width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--grafit-25); display: grid; place-items: center; transition: all .2s; margin-top: 1px; }
+  .check input:checked + .box { background: var(--rosa); border-color: var(--rosa); }
+  .check input:checked + .box::after { content: ""; width: 8px; height: 12px; border: solid var(--vit); border-width: 0 2.5px 2.5px 0; transform: rotate(45deg) translate(-1px, -1px); }
+  .check input:focus-visible + .box { outline: 3px solid var(--bla); outline-offset: 2px; }
+  .check input:checked ~ span { color: var(--grafit-75); }
+  .progress { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+  .bar { flex: 1 1 240px; height: 12px; background: var(--vit); border-radius: 999px; overflow: hidden; }
+  .bar span { display: block; height: 100%; width: 0; background: var(--rosa); border-radius: 999px; transition: width .3s; }
+  .progress strong { font-size: 15px; }
+
+  .next {
+    margin-top: 32px; background: var(--grafit); color: var(--vit); border-radius: var(--radius) 0 var(--radius) 0;
+    padding: 36px; display: grid; grid-template-columns: 1fr 2fr; gap: 28px; align-items: center;
+  }
+  .next h3 { font-size: 26px; }
+  .next ol { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .next li { background: rgba(255,255,255,0.08); border-radius: 18px; padding: 16px; font-size: 14px; color: var(--grafit-25); }
+  .next li strong { display: block; color: var(--vit); font-size: 15px; margin-bottom: 4px; }
+
+  /* Arbetsblad */
+  .ws { display: grid; gap: 20px; }
+  .ws-step { background: var(--yta); border-radius: var(--radius); padding: 30px; }
+  .ws-step header { display: flex; gap: 16px; align-items: baseline; margin-bottom: 18px; flex-wrap: wrap; }
+  .ws-step header .n { width: 40px; height: 40px; border-radius: 50%; background: var(--rosa); color: var(--vit); display: grid; place-items: center; font-weight: 700; flex: none; align-self: center; }
+  .ws-step header h3 { font-size: 21px; }
+  .ws-step header span { color: var(--grafit-75); font-size: 14px; }
+  .fields { display: grid; gap: 14px; }
+  .fields.c2 { grid-template-columns: repeat(2, 1fr); }
+  .fields.c3 { grid-template-columns: repeat(3, 1fr); }
+  .fields.c4 { grid-template-columns: repeat(4, 1fr); }
+  .field label { display: block; font-weight: 700; font-size: 14px; margin-bottom: 6px; }
+  .field label small { display: block; font-weight: 500; color: var(--grafit-75); font-size: 12px; }
+  .field textarea, .field input {
+    width: 100%; font-family: inherit; font-size: 15px; color: var(--grafit);
+    border: 2px solid transparent; background: var(--vit); border-radius: 16px; padding: 12px 14px;
+    resize: vertical; transition: border-color .2s;
+  }
+  .field textarea { min-height: 96px; }
+  .field textarea:focus, .field input:focus { outline: none; border-color: var(--rosa); }
+  .tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; margin-bottom: 8px; }
+  .t-fast { background: var(--grafit); color: var(--vit); }
+  .t-open { background: var(--rosa); color: var(--vit); }
+  .t-unk { background: var(--orange); color: var(--grafit); }
+
+  table.infl { width: 100%; border-collapse: separate; border-spacing: 0 8px; }
+  table.infl th { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--grafit-75); font-weight: 700; text-align: center; padding: 0 6px; }
+  table.infl th:first-child { text-align: left; }
+  table.infl td { background: var(--vit); padding: 8px; text-align: center; }
+  table.infl td:first-child { border-radius: 16px 0 0 16px; text-align: left; width: 44%; }
+  table.infl td:last-child { border-radius: 0 16px 16px 0; }
+  table.infl td input[type="text"] { border: 0; background: transparent; padding: 6px 8px; width: 100%; font-family: inherit; font-size: 15px; }
+  table.infl td input[type="text"]:focus { outline: 2px solid var(--rosa); border-radius: 10px; }
+  table.infl input[type="radio"] { width: 20px; height: 20px; accent-color: var(--rosa); cursor: pointer; }
+
+  .ws-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+  .saved { font-size: 13px; color: var(--grafit-75); align-self: center; }
+
+  /* Stöd */
+  .support { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+  /* Footer */
+  footer { background: var(--grafit); color: var(--vit); position: relative; overflow: hidden; }
+  footer .wrap { padding-top: 88px; padding-bottom: 40px; position: relative; z-index: 2; }
+  footer h2 { font-size: clamp(32px, 5vw, 52px); font-weight: 800; max-width: 620px; }
+  footer .meta { margin-top: 48px; display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; font-size: 14px; color: var(--grafit-25); }
+  footer .meta a { color: var(--vit); }
+  .footer-band { display: flex; gap: 6px; padding: 0 0 0 0; overflow: hidden; }
+  .footer-band .col { display: grid; gap: 6px; }
+
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* ---------- Responsivt ---------- */
+  @media (max-width: 900px) {
+    .grid-3, .sort, .steps5 { grid-template-columns: 1fr 1fr; }
+    .callout { grid-template-columns: 1fr; }
+    .phase.show { grid-template-columns: 1fr; }
+    .conseq { grid-template-columns: 1fr 1fr; }
+    .next { grid-template-columns: 1fr; }
+    .fields.c4 { grid-template-columns: 1fr 1fr; }
+    .spiral { grid-template-columns: repeat(3, 1fr); }
+    .hero-blocks { opacity: 0.25; right: -120px; }
+    .pockets { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 640px) {
+    .wrap { padding: 0 16px; }
+    section.part { padding: 64px 0; }
+    .grid-2, .grid-3, .sort, .steps5, .q-list, .checklist, .support, .fields.c2, .fields.c3, .fields.c4, .next ol { grid-template-columns: 1fr; }
+    .card, .ws-step { padding: 24px; }
+    .pit, .pit-head { grid-template-columns: 1fr; }
+    .pit-head { display: none; }
+    .ladder { grid-template-columns: 1fr 1fr; border-radius: 22px; }
+    .conseq { grid-template-columns: 1fr; }
+    .spiral { grid-template-columns: 1fr 1fr; }
+    .topbar .logo span.txt { display: none; }
+    table.infl th { font-size: 9px; letter-spacing: 0; padding: 0 2px; }
+    table.infl td:first-child { width: 40%; }
+  }
+
+  /* ---------- Utskrift: bara arbetsbladet ---------- */
+  @media print {
+    @page { margin: 14mm; }
+    body { font-size: 11pt; }
+    body.print-ws > *:not(main), body.print-ws main > *:not(#arbetsblad) { display: none !important; }
+    body.print-ws #arbetsblad { padding: 0; background: none; }
+    .topbar, .ws-actions, .no-print, .random-q { display: none !important; }
+    .reveal { opacity: 1 !important; transform: none !important; }
+    .ws-step { break-inside: avoid; border: 1px solid var(--grafit-25); background: var(--vit) !important; padding: 16px; }
+    .field textarea, .field input, table.infl td { border: 1px solid var(--grafit-25) !important; }
+    .field textarea { min-height: 70px; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap">
+    <a class="logo" href="#start" aria-label="Lorensbergs – till början">
+      <span class="txt">LORENSBERGS</span>
+      <svg viewBox="0 0 40 40" aria-hidden="true"><g fill="#fff">
+        <ellipse cx="20" cy="9" rx="5.2" ry="8.5"/>
+        <ellipse cx="20" cy="9" rx="5.2" ry="8.5" transform="rotate(72 20 20)"/>
+        <ellipse cx="20" cy="9" rx="5.2" ry="8.5" transform="rotate(144 20 20)"/>
+        <ellipse cx="20" cy="9" rx="5.2" ry="8.5" transform="rotate(216 20 20)"/>
+        <ellipse cx="20" cy="9" rx="5.2" ry="8.5" transform="rotate(288 20 20)"/>
+      </g></svg>
+    </a>
+    <nav class="nav" aria-label="Innehåll">
+      <a href="#situationen">1 Situationen</a>
+      <a href="#principer">2 Principer</a>
+      <a href="#rad">3 Före, under, efter</a>
+      <a href="#fallgropar">4 Fallgropar</a>
+      <a href="#fragor">5 Frågor</a>
+      <a href="#checklista">6 Checklista</a>
+      <a href="#arbetsblad">7 Arbetsblad</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- ========== HERO ========== -->
+  <section class="hero" id="start">
+    <div class="hero-blocks" aria-hidden="true">
+      <div class="blocks" style="grid-template-columns: repeat(6, 64px); --s: 64px;">
+        <div class="b none"></div><div class="b none"></div><div class="b leaf c-r"></div><div class="b circle c-r"></div><div class="b leaf2 c-r"></div><div class="b none"></div>
+        <div class="b none"></div><div class="b q2 c-g"></div><div class="b leaf c-r"></div><div class="b circle c-o"></div><div class="b leaf2 c-r"></div><div class="b q1 c-g"></div>
+        <div class="b q3 c-g"></div><div class="b leaf2 c-g"></div><div class="b top c-g"></div><div class="b leaf c-l"></div><div class="b circle c-l"></div><div class="b leaf2 c-l"></div>
+        <div class="b none"></div><div class="b q4 c-g"></div><div class="b top c-g"></div><div class="b leaf c-g"></div><div class="b top c-g"></div><div class="b q3 c-g"></div>
+        <div class="b leaf c-g"></div><div class="b top c-g"></div><div class="b top c-g"></div><div class="b top c-g"></div><div class="b top c-g"></div><div class="b leaf2 c-g"></div>
+        <div class="b c-t"></div><div class="b c-t"></div><div class="b c-t"></div><div class="b c-t"></div><div class="b c-t"></div><div class="b c-t"></div>
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="eyebrow">Guide för dig som leder</div>
+      <h1>Leda i <span class="rosa">ständig</span> förändring</h1>
+      <p class="lead">Stöd för dig som leder när riktning, förutsättningar eller prioriteringar skiftar och alla svar ännu inte finns.</p>
+      <div class="quote"><small>Använd guiden när du tänker</small><span>”Jag behöver leda mitt team när mycket förändras.”</span></div>
+      <div class="shortcuts">
+        <a class="pill pill-rosa" href="#checklista">Har 5 minuter? Checklistan</a>
+        <a class="pill pill-ghost" href="#fragor">Inför teammötet: frågorna</a>
+        <a class="pill pill-ghost" href="#arbetsblad">Arbeta med teamet: arbetsbladet</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 1 SITUATIONEN ========== -->
+  <section class="part" id="situationen">
+    <div class="wrap">
+      <div class="part-head reveal">
+        <div class="num">1 · Situationen</div>
+        <h2>Förändring är inte längre ett projekt. Den <span class="rosa">pågår</span> hela tiden.</h2>
+        <p>Omvärlden rör sig snabbare än planeringscyklerna. Därför behöver vi gå från att <strong>genomföra</strong> förändring till att bygga förmågan att <strong>leva i</strong> den. Det sker framför allt i vardagens interaktioner med teamet, och mindre genom planer och information.</p>
+      </div>
+
+      <div class="grid-2 reveal">
+        <div class="card soft">
+          <div class="label rosa">Ditt ansvar som ledare</div>
+          <ul class="arrows">
+            <li><strong>Skapa förståelse och mening.</strong> Varför händer det här, och vad betyder det för oss?</li>
+            <li><strong>Kommunicera tydligt</strong>, även när budskapet är ofullständigt.</li>
+            <li><strong>Var öppen</strong> med vad du vet, vad du inte vet och när mer kan komma.</li>
+            <li><strong>Översätt</strong> förändringen till teamets vardag: uppdrag, roller, samarbete och arbetsbelastning.</li>
+          </ul>
+        </div>
+        <div class="card soft leaf-card">
+          <div class="label" style="color: var(--grafit-75)">Det här behöver du inte</div>
+          <ul class="arrows t">
+            <li>Ha alla svar innan du pratar med teamet.</li>
+            <li>Ha en detaljplan för hela vägen.</li>
+            <li>Lotsa alla genom samma ”förändringsfaser”. Människor reagerar olika och i olika takt.</li>
+          </ul>
+          <p class="dim" style="margin-top: 16px;">Fokusera i stället på vad du och teamet <strong>gör</strong> när något förändras.</p>
+        </div>
+      </div>
+
+      <div class="reveal" style="margin-top: 64px;">
+        <div class="num">Börja här</div>
+        <h3 style="font-size: 26px; margin: 8px 0 6px;">Sortera det du vet: vad ligger fast och vad är öppet?</h3>
+        <p class="dim">Det enskilt viktigaste du kan göra för att skapa trygghet. Gör det själv först och sedan tillsammans med teamet.</p>
+        <div class="sort">
+          <div class="card s-fast">
+            <div class="label" style="color: var(--rosa)">Ligger fast</div>
+            <h3>Beslutat</h3>
+            <p>Riktning, ramar, budget och mål. Säg det rakt ut.</p>
+            <div class="say">”Det här är bestämt, och skälet är …”</div>
+          </div>
+          <div class="card s-open">
+            <div class="label">Är öppet</div>
+            <h3>Inte bestämt än</h3>
+            <p>Kanske något teamet kan påverka. Bjud in.</p>
+            <div class="say">”Hur vi gör det här är inte bestämt. Där vill jag ha er hjälp.”</div>
+          </div>
+          <div class="card s-unknown">
+            <div class="label">Vet inte än</div>
+            <h3>Okänt, även för dig</h3>
+            <p>Säg när du räknar med att veta mer.</p>
+            <div class="say">”Det vet jag inte ännu. Jag återkommer senast …”</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout reveal">
+        <div>
+          <div class="label">Tvåhänt ledarskap</div>
+          <p>Du behöver kunna växla mellan två lägen och vara medveten om vilket du är i. Att blanda dem omedvetet skapar förvirring.</p>
+        </div>
+        <div>
+          <h3>Målstyrande</h3>
+          <em>”leda genom att planera”</em>
+          <p>När målet är känt och vägen går att planera: tydliga mål, en plan och uppföljning mot planen.</p>
+        </div>
+        <div>
+          <h3 class="rosa">Målsökande</h3>
+          <em>”leda genom att utforska”</em>
+          <p>När slutläget inte är känt: riktning och principer, små försök och gemensamt lärande längs vägen.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 2 PRINCIPER ========== -->
+  <section class="part alt" id="principer">
+    <div class="wrap">
+      <div class="part-head reveal">
+        <div class="num">2 · Tre principer</div>
+        <h2>Lyssna, lära och leda med <span class="rosa">riktning</span></h2>
+        <p>Vi försöker inte förutsäga allt. Vi skapar en rytm där vi lyssnar, testar och lär i takt med att omvärlden förändras. Du håller riktning och trygghet, så att teamet kan hitta den bästa vägen.</p>
+      </div>
+      <div class="grid-3 reveal">
+        <div class="card principle p1">
+          <div class="big">1</div>
+          <h3>Lyssna systematiskt</h3>
+          <p class="intro">Fånga behov, hinder och signaler från vardagen.</p>
+          <ul class="arrows">
+            <li>Ställ frågor innan du ger svar.</li>
+            <li>Ta invändningar och kritik som information, inte som motstånd.</li>
+            <li>Fråga särskilt dem som brukar vara tysta.</li>
+            <li>Lyft det du hör uppåt och åt sidan. Du är en bro mellan nivåer.</li>
+          </ul>
+        </div>
+        <div class="card principle p2 leaf-card">
+          <div class="big">2</div>
+          <h3>Lära snabbt i små steg</h3>
+          <p class="intro">Testa, mät och förbättra i försök på 4–6 veckor.</p>
+          <ul class="arrows o">
+            <li>Välj ett arbetssätt att pröva i stället för att besluta allt.</li>
+            <li>Bestäm i förväg hur ni ser att det fungerar.</li>
+            <li>Stäm av, justera och besluta: fortsätta, ändra eller sluta?</li>
+            <li>Gör lärandet synligt: vad vet vi nu som vi inte visste förut?</li>
+          </ul>
+        </div>
+        <div class="card principle p3">
+          <div class="big">3</div>
+          <h3>Leda med riktning</h3>
+          <p class="intro">Ett tydligt ”varför” och gemensamma principer, inte detaljplaner.</p>
+          <ul class="arrows l">
+            <li>Formulera riktningen i en mening: vart ni är på väg och varför.</li>
+            <li>Kom överens om några principer som styr hur ni väljer.</li>
+            <li>Prioritera och hjälp teamet att välja bort.</li>
+            <li>Fatta beslut trots osäkerhet, och säg att de kan omprövas.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pockets reveal">
+        <div class="card dark">
+          <div class="label rosa">Leta efter</div>
+          <h3>Möjlighetsfickor</h3>
+          <p>Små öppningar där något nytt kan uppstå när rätt personer, plats och timing möts. De kan starta kedjereaktioner och ge ny riktning. Ledarskap handlar om att se dem och om att skapa förutsättningar för fler.</p>
+        </div>
+        <div class="card">
+          <div class="label" style="color: var(--grafit-75)">Så gör du i praktiken</div>
+          <ul class="arrows">
+            <li><strong>Nedåt:</strong> ge pionjärerna i teamet utrymme och skydd att pröva.</li>
+            <li><strong>Sidledes:</strong> koppla ihop initiativ som drar åt samma håll med andra ledare.</li>
+            <li><strong>Uppåt:</strong> berätta vad som fungerar, med konkreta exempel.</li>
+            <li><strong>Fråga teamet:</strong> ”Var ser ni att vi redan nu kan göra något nytt?”</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card reveal" style="margin-top: 20px;">
+        <div class="label rosa">Skapa delaktighet där den är verklig</div>
+        <p>Var ärlig om hur mycket teamet kan påverka. Falsk delaktighet skadar förtroendet mer än ingen delaktighet alls.</p>
+        <div class="ladder">
+          <div class="l1"><strong>Informeras</strong><small>Beslutat. Vi förklarar varför.</small></div>
+          <div class="l2"><strong>Tycka till</strong><small>Era synpunkter påverkar beslutet.</small></div>
+          <div class="l3"><strong>Utforma</strong><small>Ni tar fram hur vi gör.</small></div>
+          <div class="l4"><strong>Bestämma</strong><small>Teamet beslutar inom ramen.</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ========== 3 FÖRE UNDER EFTER ========== -->
+  <section class="part" id="rad">
+    <div class="wrap">
+      <div class="part-head reveal">
+        <div class="num">3 · Konkreta råd</div>
+        <h2>När något förändras: så gör du <span class="rosa">före</span>, under och efter</h2>
+        <p>Gäller när riktning, förutsättningar eller prioriteringar skiftar, oavsett om förändringen är stor eller liten.</p>
+      </div>
+
+      <div class="phase-tabs reveal" role="tablist" aria-label="Fas">
+        <button class="pill pill-ljus" role="tab" aria-selected="true" aria-controls="ph-fore" id="tab-fore">Före · Förbered dig</button>
+        <button class="pill pill-ljus" role="tab" aria-selected="false" aria-controls="ph-under" id="tab-under">Under · Möt teamet</button>
+        <button class="pill pill-ljus" role="tab" aria-selected="false" aria-controls="ph-efter" id="tab-efter">Efter · Följ, lär, justera</button>
+      </div>
+
+      <div class="phase ph-fore show reveal" id="ph-fore" role="tabpanel" aria-labelledby="tab-fore">
+        <div class="card intro-card leaf-card"><div class="label">Före</div><h3>Förbered dig själv</h3><p>Ditt eget förarbete avgör hur tryggt teamet kan ta emot förändringen.</p></div>
+        <div class="card soft"><ul class="arrows g">
+          <li><strong>Förstå varför.</strong> Kan du förklara skälet med egna ord? Om inte, fråga din chef först.</li>
+          <li><strong>Sortera</strong> vad som ligger fast, vad som är öppet och vad ingen vet än.</li>
+          <li><strong>Gör en första översättning:</strong> vad kan det betyda för teamets uppdrag, roller, samarbete och belastning?</li>
+          <li><strong>Bestäm</strong> var teamet kan påverka och var det inte går.</li>
+          <li><strong>Känn efter</strong> hur du själv påverkas. Teamet märker din hållning.</li>
+          <li><strong>Planera tid för dialog</strong>, inte bara en informationspunkt.</li>
+        </ul></div>
+      </div>
+      <div class="phase ph-under" id="ph-under" role="tabpanel" aria-labelledby="tab-under">
+        <div class="card intro-card leaf-card"><div class="label">Under</div><h3>Möt teamet</h3><p>Varje interaktion spelar roll, och den här allra mest.</p></div>
+        <div class="card soft"><ul class="arrows l">
+          <li><strong>Börja med varför</strong> och riktning, kort och tydligt.</li>
+          <li><strong>Var öppen</strong> med vad du vet, inte vet och när ni vet mer.</li>
+          <li><strong>Lyssna mer än du pratar.</strong> Ställ frågor och ta in invändningar.</li>
+          <li><strong>Översätt tillsammans:</strong> vad betyder det för oss, i vårt arbete?</li>
+          <li><strong>Prioritera:</strong> vad slutar vi med, pausar eller gör mindre av?</li>
+          <li><strong>Kom överens</strong> om ett första steg och om när ni ses igen.</li>
+        </ul></div>
+      </div>
+      <div class="phase ph-efter" id="ph-efter" role="tabpanel" aria-labelledby="tab-efter">
+        <div class="card intro-card leaf-card"><div class="label">Efter</div><h3>Följ, lär och justera</h3><p>Det är i uppföljningen som förändringen blir verklig.</p></div>
+        <div class="card soft"><ul class="arrows bl">
+          <li><strong>Återkom när du lovat</strong>, även om du inte har något nytt att säga.</li>
+          <li><strong>Följ upp konsekvenserna:</strong> arbetsbelastning, samarbete och oklara roller.</li>
+          <li><strong>Utvärdera försök</strong> efter 4–6 veckor: behåll, ändra eller sluta.</li>
+          <li><strong>Gör lärandet till en vana</strong> med en återkommande punkt på teammötet.</li>
+          <li><strong>Fira inte för tidigt.</strong> Ett ändrat beteende är inte en förankrad förändring.</li>
+          <li><strong>Lyft hinder och insikter</strong> uppåt i organisationen.</li>
+        </ul></div>
+      </div>
+
+      <div class="grid-2 reveal" style="margin-top: 20px;">
+        <div class="card soft">
+          <div class="label rosa">Hjälp teamet att välja bort</div>
+          <p>Förändring som läggs ”on top” på allt annat är en av de vanligaste fallgroparna. Ställ frågan rakt:</p>
+          <p style="font-size: 19px; font-weight: 600;">”Vi skulle vinna på att göra mindre av … och mer av …”</p>
+          <p class="dim" style="margin: 0;">Kan ni inte välja bort något själva? Lyft det till din chef. Det är också ett beslut.</p>
+        </div>
+        <div class="card soft leaf-card">
+          <div class="label" style="color: var(--grafit-75)">Fånga konsekvenserna</div>
+          <div class="conseq" style="grid-template-columns: 1fr 1fr; margin-top: 0;">
+            <div><strong>Uppdrag</strong><span>Ändras vad vi levererar, till vem och när?</span></div>
+            <div><strong>Roller</strong><span>Vem gör vad nu? Vad är otydligt?</span></div>
+            <div><strong>Samarbete</strong><span>Vilka andra team berörs, och hur?</span></div>
+            <div><strong>Belastning</strong><span>Vad tar tid från annat? Är det hållbart?</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal" style="margin-top: 64px;">
+        <div class="num">Förändringsspiralen</div>
+        <h3 style="font-size: 26px; margin: 8px 0 6px;">Människor rör sig i <span class="rosa">olika</span> takt</h3>
+        <p class="dim" style="max-width: 720px;">Spiralen visar de steg vi tar när vi tar till oss något nytt. Använd den för att se var olika personer i teamet befinner sig, inte för att driva alla i samma tempo.</p>
+        <div class="spiral" style="margin-top: 24px;">
+          <div style="background: var(--grafit); min-height: 120px;">Förbered<small>Skapa förutsättningar</small></div>
+          <div style="background: var(--rosa); min-height: 150px;">Medvetenhet<small>Vad händer och varför?</small></div>
+          <div style="background: var(--orange); min-height: 180px; color: var(--grafit);">Intresse<small>Vad betyder det för mig?</small></div>
+          <div style="background: var(--gron); min-height: 210px;">Pröva<small>Testa i liten skala</small></div>
+          <div style="background: var(--lila); min-height: 240px;">Tillämpa<small>Använd i vardagen</small></div>
+          <div style="background: var(--bla); min-height: 270px;">Implementera<small>Det sitter i väggarna</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 4 FALLGROPAR ========== -->
+  <section class="part alt" id="fallgropar">
+    <div class="wrap">
+      <div class="part-head reveal">
+        <div class="num">4 · Vanliga utmaningar</div>
+        <h2>Fallgropar vi känner <span class="rosa">igen</span></h2>
+        <p>Varje fallgrop har ett motdrag som du kan göra i ditt team.</p>
+      </div>
+      <div class="reveal">
+        <div class="pit-head"><span>Fallgrop</span><span>Så ser det ut</span><span>Ditt motdrag</span></div>
+        <div class="pit"><div class="name"><i></i>Otydligt budskap</div><div>Vi är vaga om vad vi vill och blandar målstyrande och målsökande utan att säga det.</div><div class="move">Säg vad som ligger fast, vad som är öppet och vilket läge ni är i.</div></div>
+        <div class="pit"><div class="name"><i style="background: var(--orange)"></i>Vi skapar gap</div><div>Vi pratar över huvudet på verksamheten, och förståelse och delaktighet uteblir.</div><div class="move">Översätt till teamets vardag. Lägg mer tid på dialog än på information.</div></div>
+        <div class="pit"><div class="name"><i style="background: var(--gron)"></i>Fokus på vad i stället för hur</div><div>Färdiga lösningar släpps ut och förväntas fungera av sig själva.</div><div class="move">Låt teamet utforma hur, och pröva i små steg.</div></div>
+        <div class="pit"><div class="name"><i style="background: var(--lila)"></i>Förändring ”on top”</div><div>Vi kör på som om det fanns extra resurser.</div><div class="move">Prioritera och välj bort, och lyft det ni inte kan välja bort.</div></div>
+        <div class="pit"><div class="name"><i style="background: var(--bla)"></i>Segern tas ut i förskott</div><div>Fokus släpps vid första tecknet på förändring, och det blir återfall.</div><div class="move">Följ upp över tid. Gör lärandet till en återkommande punkt.</div></div>
+      </div>
+
+      <div class="reveal" style="margin-top: 64px;">
+        <div class="num">När motstånd uppstår</div>
+        <h3 style="font-size: 26px; margin: 8px 0 6px;">Fem steg i <span class="rosa">samtalet</span></h3>
+        <p class="dim" style="max-width: 720px;">Motstånd är ofta omsorg om något viktigt: kvalitet, kunder, kollegor eller den egna rollen. Behandla det som information.</p>
+        <div class="steps5">
+          <div class="step5"><div class="n" style="background: var(--grafit)">1</div><h4>Bekräfta</h4><p>”Jag hör att det här väcker oro. Berätta mer.”</p></div>
+          <div class="step5"><div class="n" style="background: var(--rosa)">2</div><h4>Utforska</h4><p>”Vad är det du är rädd att vi tappar?”</p></div>
+          <div class="step5"><div class="n" style="background: var(--orange)">3</div><h4>Översätt</h4><p>”Det du behöver är … tydlighet, tid eller stöd?”</p></div>
+          <div class="step5"><div class="n" style="background: var(--gron)">4</div><h4>Testa smått</h4><p>”Låt oss prova i fyra veckor och utvärdera.”</p></div>
+          <div class="step5"><div class="n" style="background: var(--lila)">5</div><h4>Stäng</h4><p>”Vi följer upp om två veckor, tillsammans.”</p></div>
+        </div>
+        <div class="card leaf-card" style="margin-top: 20px; background: var(--grafit); color: var(--vit);">
+          <p style="margin: 0;"><strong class="rosa">Kritik kan vara rätt.</strong> Om en invändning pekar på en verklig risk: tacka för den, ta den vidare och berätta vad som hände med den. Då vågar teamet säga ifrån nästa gång.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ========== 5 FRÅGOR ========== -->
+  <section class="part" id="fragor">
+    <div class="wrap">
+      <div class="part-head reveal">
+        <div class="num">5 · Frågor att använda</div>
+        <h2>Frågor till dig själv, till teamet och till en <span class="rosa">medarbetare</span></h2>
+        <p>Goda frågor öppnar mer än goda svar.</p>
+      </div>
+      <div class="q-tabs reveal" role="tablist" aria-label="Frågor">
+        <button class="pill pill-ljus" role="tab" aria-selected="true" aria-controls="q-dig" id="qt-dig">Till dig som ledare</button>
+        <button class="pill pill-ljus" role="tab" aria-selected="false" aria-controls="q-team" id="qt-team">Till teamet</button>
+        <button class="pill pill-ljus" role="tab" aria-selected="false" aria-controls="q-med" id="qt-med">Till en medarbetare</button>
+      </div>
+      <div class="q-panel show reveal" id="q-dig" role="tabpanel" aria-labelledby="qt-dig">
+        <div class="q-list">
+          <div class="q-item">Kan jag förklara varför det här händer, med egna ord och på en minut?</div>
+          <div class="q-item">Vad ligger fast, vad är öppet och vad vet ingen än?</div>
+          <div class="q-item">Leder jag just nu målstyrande eller målsökande, och vet teamet om det?</div>
+          <div class="q-item">Hur påverkas jag själv, och hur märks det för teamet?</div>
+          <div class="q-item">Vem i teamet har jag inte hört något från?</div>
+          <div class="q-item">Vad har vi lagt till utan att ta bort något?</div>
+          <div class="q-item">Var finns en möjlighetsficka som jag kan ge utrymme åt?</div>
+          <div class="q-item">Vad behöver jag själv lära mig, eller få stöd i?</div>
+        </div>
+      </div>
+      <div class="q-panel" id="q-team" role="tabpanel" aria-labelledby="qt-team">
+        <div class="q-list">
+          <div class="q-item">Vad i det här är tydligt för er, och vad är oklart?</div>
+          <div class="q-item">Vad betyder det för vårt arbete den närmaste månaden?</div>
+          <div class="q-item">Vad oroar er, och vad ser ni för möjligheter?</div>
+          <div class="q-item">Vad behöver vi sluta med, pausa eller göra mindre av?</div>
+          <div class="q-item">Vad kan vi pröva i fyra veckor? Hur vet vi att det fungerar?</div>
+          <div class="q-item">Vilka andra behöver vi prata med?</div>
+          <div class="q-item">Vad har vi lärt oss sedan sist?</div>
+          <div class="q-item">”För att ta vara på det här behöver vi bli bättre på …, men i dag hindras vi av …”</div>
+        </div>
+        <p class="q-hint">Till teammötet: välj två eller tre frågor, inte alla.</p>
+      </div>
+      <div class="q-panel" id="q-med" role="tabpanel" aria-labelledby="qt-med">
+        <div class="q-list">
+          <div class="q-item">Hur påverkar det här dig och ditt arbete?</div>
+          <div class="q-item">Vad är viktigast för dig att vi inte tappar?</div>
+          <div class="q-item">Vad behöver du från mig just nu: tydlighet, tid eller stöd?</div>
+          <div class="q-item">Hur ser din arbetsbelastning ut? Vad kan vi prioritera ned?</div>
+          <div class="q-item">Var ser du att du kan bidra, eller vill pröva något nytt?</div>
+          <div class="q-item">Finns det något du inte har sagt i gruppen som du vill säga nu?</div>
+        </div>
+        <p class="q-hint">Fånga upp den som har blivit tyst. Tystnad är också en signal.</p>
+      </div>
+
+      <div class="random-q reveal no-print">
+        <p><small>Dagens fråga</small><span id="rq-text">Vad i det här är tydligt för er, och vad är oklart?</span></p>
+        <button class="pill pill-rosa" id="rq-btn" type="button">Ge mig en ny fråga</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 6 CHECKLISTA ========== -->
+  <section class="part alt" id="checklista">
+    <div class="wrap">
+      <div class="part-head reveal">
+        <div class="num">6 · Checklista</div>
+        <h2>Har <span class="rosa">du</span> …</h2>
+        <p>Bocka av när du har gjort det. Din checklista sparas i den här webbläsaren.</p>
+      </div>
+      <div class="progress reveal">
+        <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="12" aria-valuenow="0" aria-label="Avbockade punkter"><span id="bar"></span></div>
+        <strong id="count">0 av 12</strong>
+        <button class="pill pill-ljus" style="background: var(--vit)" type="button" id="reset-check">Börja om</button>
+      </div>
+      <div class="checklist reveal" id="checklist"></div>
+
+      <div class="next reveal">
+        <div>
+          <div class="label rosa" style="font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 10px;">Ditt nästa steg</div>
+          <h3>Gör det här den här veckan</h3>
+          <p style="color: var(--grafit-25); margin: 12px 0 18px;">Avsätt 45 minuter på nästa teammöte och gå igenom tre saker tillsammans.</p>
+          <a class="pill pill-rosa" href="#arbetsblad">Öppna arbetsbladet</a>
+        </div>
+        <ol>
+          <li><strong>1. Fast, öppet, vet inte än</strong>Vad vet vi?</li>
+          <li><strong>2. Vad betyder det för oss?</strong>Konsekvenser och vad vi väljer bort.</li>
+          <li><strong>3. Vad prövar vi?</strong>Ett första steg och ett datum för uppföljning.</li>
+        </ol>
+      </div>
+
+      <div class="support reveal" style="margin-top: 20px;">
+        <div class="card">
+          <div class="label rosa">Ta stöd när …</div>
+          <ul class="arrows">
+            <li>förändringen påverkar organisation, roller, bemanning eller anställningsvillkor. Det kan kräva samverkan med de fackliga organisationerna.</li>
+            <li>du behöver göra en riskbedömning av arbetsmiljön inför förändringen.</li>
+            <li>du ser tecken på långvarig stress, hög belastning eller ohälsa.</li>
+            <li>motstånd eller oenighet har blivit en konflikt som ni inte kommer vidare med.</li>
+            <li>du själv behöver stöd i din ledarroll.</li>
+          </ul>
+        </div>
+        <div class="card leaf-card">
+          <div class="label" style="color: var(--grafit-75)">Vägar till stöd</div>
+          <ul class="arrows t">
+            <li><strong>Din egen chef</strong>, för att förstå varför, få mandat och prioritera.</li>
+            <li><strong>HR</strong>, vid frågor om organisation, arbetsmiljö och arbetsrätt.</li>
+            <li><strong>Kommunikation</strong>, när budskapet behöver nå fler än ditt team.</li>
+            <li><strong>Andra ledare</strong>, för att dela erfarenheter och lära av varandra.</li>
+            <li><strong>Företagshälsovården</strong>, vid frågor om hälsa.</li>
+            <li><strong>Lorensbergs</strong>, när ni vill ha en partner som designar och faciliterar processen tillsammans med er.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ========== 7 ARBETSBLAD ========== -->
+  <section class="part" id="arbetsblad">
+    <div class="wrap">
+      <div class="part-head reveal">
+        <div class="num">7 · Arbetsblad</div>
+        <h2>Förändring i <span class="rosa">vårt</span> team</h2>
+        <p>Dialogstöd för teammötet, 45–60 minuter. Fyll i steg 1 före mötet. Allt du skriver sparas bara i din webbläsare och kan skrivas ut eller sparas som PDF.</p>
+      </div>
+
+      <form class="ws" id="ws" onsubmit="return false;">
+        <div class="ws-step">
+          <div class="fields c3">
+            <div class="field"><label for="w-datum">Datum</label><input type="date" id="w-datum" data-k="datum"></div>
+            <div class="field"><label for="w-team">Team</label><input type="text" id="w-team" data-k="team" placeholder="Vilket team?"></div>
+            <div class="field"><label for="w-mening">Förändringen i en mening, och varför</label><input type="text" id="w-mening" data-k="mening" placeholder="Vi … för att …"></div>
+          </div>
+        </div>
+
+        <div class="ws-step">
+          <header><span class="n">1</span><h3>Vad vet vi?</h3><span>Gör det själv före mötet och stäm av med teamet.</span></header>
+          <div class="fields c3">
+            <div class="field"><span class="tag t-fast">Ligger fast</span><label for="w-fast">Beslutat<small>Riktning, ramar, mål</small></label><textarea id="w-fast" data-k="fast"></textarea></div>
+            <div class="field"><span class="tag t-open">Är öppet</span><label for="w-open">Inte bestämt<small>Kanske påverkbart</small></label><textarea id="w-open" data-k="open"></textarea></div>
+            <div class="field"><span class="tag t-unk">Vet inte än</span><label for="w-unk">Okänt<small>… och när vi räknar med att veta mer</small></label><textarea id="w-unk" data-k="unk"></textarea></div>
+          </div>
+        </div>
+
+        <div class="ws-step">
+          <header><span class="n">2</span><h3>Vad betyder det för oss?</h3><span>Översätt till vår vardag.</span></header>
+          <div class="fields c4">
+            <div class="field"><label for="w-uppdrag">Uppdrag<small>Vad levererar vi, till vem, när?</small></label><textarea id="w-uppdrag" data-k="uppdrag"></textarea></div>
+            <div class="field"><label for="w-roller">Roller<small>Vem gör vad nu?</small></label><textarea id="w-roller" data-k="roller"></textarea></div>
+            <div class="field"><label for="w-samarbete">Samarbete<small>Vilka andra berörs?</small></label><textarea id="w-samarbete" data-k="samarbete"></textarea></div>
+            <div class="field"><label for="w-belastning">Arbetsbelastning<small>Är det hållbart?</small></label><textarea id="w-belastning" data-k="belastning"></textarea></div>
+          </div>
+          <p class="dim" style="margin: 16px 0 0; font-size: 14px;">Om motstånd uppstår: bekräfta › utforska › översätt (tydlighet, tid eller stöd?) › testa smått › stäng med en uppföljning.</p>
+        </div>
+
+        <div class="ws-step">
+          <header><span class="n">3</span><h3>Prioritera och välj bort</h3><span>”Vi skulle vinna på att göra mindre av … och mer av …”</span></header>
+          <div class="fields c4">
+            <div class="field"><label for="w-sluta">Sluta med</label><textarea id="w-sluta" data-k="sluta"></textarea></div>
+            <div class="field"><label for="w-mindre">Göra mindre av / pausa</label><textarea id="w-mindre" data-k="mindre"></textarea></div>
+            <div class="field"><label for="w-fortsatta">Fortsätta med</label><textarea id="w-fortsatta" data-k="fortsatta"></textarea></div>
+            <div class="field"><label for="w-borja">Börja med</label><textarea id="w-borja" data-k="borja"></textarea></div>
+          </div>
+          <p class="dim" style="margin: 16px 0 0; font-size: 14px;">Det vi inte kan välja bort själva lyfter ledaren vidare.</p>
+        </div>
+
+        <div class="ws-step">
+          <header><span class="n">4</span><h3>Var kan vi påverka?</h3><span>Var ärlig. Markera för det som är öppet.</span></header>
+          <table class="infl">
+            <thead><tr><th>Fråga eller del av förändringen</th><th>Informeras</th><th>Tycka till</th><th>Utforma</th><th>Bestämma</th></tr></thead>
+            <tbody id="infl-body"></tbody>
+          </table>
+        </div>
+
+        <div class="ws-step">
+          <header><span class="n">5</span><h3>Vad prövar vi?</h3><span>Ett litet försök på 4–6 veckor.</span></header>
+          <div class="fields c2">
+            <div class="field"><label for="w-prov">Det här prövar vi</label><textarea id="w-prov" data-k="prov"></textarea></div>
+            <div class="field"><label for="w-marker">Så märker vi att det fungerar</label><textarea id="w-marker" data-k="marker"></textarea></div>
+            <div class="field"><label for="w-vem">Vem gör vad</label><textarea id="w-vem" data-k="vem"></textarea></div>
+            <div class="field"><label for="w-uppf">Vi följer upp (datum)</label><input type="date" id="w-uppf" data-k="uppf"><label for="w-beslut" style="margin-top: 14px;">Behåll, ändra eller sluta?</label><input type="text" id="w-beslut" data-k="beslut" placeholder="Fylls i vid uppföljningen"></div>
+          </div>
+        </div>
+
+        <div class="ws-step">
+          <header><span class="n">6</span><h3>Lärande och frågor vi tar vidare</h3><span>En återkommande punkt på teammötet.</span></header>
+          <div class="fields c2">
+            <div class="field"><label for="w-lart">Vad har vi lärt oss sedan sist?</label><textarea id="w-lart" data-k="lart"></textarea></div>
+            <div class="field"><label for="w-lyft">Frågor och hinder ledaren lyfter vidare<small>… och när vi får svar</small></label><textarea id="w-lyft" data-k="lyft"></textarea></div>
+          </div>
+        </div>
+
+        <div class="ws-actions">
+          <button class="pill pill-rosa" type="button" id="print-ws">Skriv ut / spara som PDF</button>
+          <button class="pill pill-ljus" type="button" id="clear-ws">Töm arbetsbladet</button>
+          <span class="saved" id="saved" aria-live="polite"></span>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <h2>Because <span class="rosa">every</span> interaction matters</h2>
+    <div class="meta">
+      <span>Lorensbergs · Göteborg · <a href="https://lorensbergs.se/sv/">lorensbergs.se</a> · <a href="mailto:info@lorensbergs.se">info@lorensbergs.se</a></span>
+      <span>Leda i ständig förändring · version 1, oktober 2026</span>
+    </div>
+  </div>
+  <div class="footer-band" aria-hidden="true" id="band"></div>
+</footer>
+<script>
+(function () {
+  // ---- Säker lagring ----
+  var store = {
+    get: function (k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } },
+    set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } },
+    del: function (k) { try { localStorage.removeItem(k); } catch (e) {} }
+  };
+
+  // ---- Flikar ----
+  function tabs(listSel, panelClass) {
+    var list = document.querySelector(listSel);
+    var btns = list.querySelectorAll('[role="tab"]');
+    btns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        btns.forEach(function (b) {
+          b.setAttribute('aria-selected', b === btn ? 'true' : 'false');
+          var p = document.getElementById(b.getAttribute('aria-controls'));
+          p.classList.toggle('show', b === btn);
+          p.classList.add('in');
+        });
+      });
+    });
+  }
+  tabs('.phase-tabs', 'phase');
+  tabs('.q-tabs', 'q-panel');
+
+  // ---- Dagens fråga ----
+  var allQ = Array.prototype.map.call(document.querySelectorAll('#q-team .q-item, #q-med .q-item'), function (n) { return n.textContent; });
+  var rq = document.getElementById('rq-text');
+  document.getElementById('rq-btn').addEventListener('click', function () {
+    var next;
+    do { next = allQ[Math.floor(Math.random() * allQ.length)]; } while (allQ.length > 1 && next === rq.textContent);
+    rq.textContent = next;
+  });
+
+  // ---- Checklista ----
+  var items = [
+    'förstått och kan förklara varför?',
+    'sorterat fast, öppet och vet inte än?',
+    'sagt när mer information kommer?',
+    'gett teamet tid för dialog, inte bara information?',
+    'varit ärlig om hur mycket teamet kan påverka?',
+    'översatt förändringen till teamets konkreta arbete?',
+    'gått igenom uppdrag, roller, samarbete och belastning?',
+    'hjälpt teamet att välja bort något?',
+    'kommit överens om ett första steg att pröva?',
+    'bokat uppföljning i kalendern?',
+    'gjort lärandet till en återkommande punkt?',
+    'lyft hinder och insikter uppåt?'
+  ];
+  var CK = 'lbg-forandring-check';
+  var checked = store.get(CK) || [];
+  var cl = document.getElementById('checklist');
+  items.forEach(function (t, i) {
+    var lab = document.createElement('label');
+    lab.className = 'check';
+    lab.innerHTML = '<input type="checkbox"' + (checked[i] ? ' checked' : '') + '><span class="box"></span><span>… ' + t + '</span>';
+    lab.querySelector('input').addEventListener('change', function (e) { checked[i] = e.target.checked; store.set(CK, checked); progress(); });
+    cl.appendChild(lab);
+  });
+  function progress() {
+    var n = checked.filter(Boolean).length;
+    document.getElementById('bar').style.width = (n / items.length * 100) + '%';
+    document.getElementById('count').textContent = n === items.length ? 'Alla 12 – snyggt jobbat!' : n + ' av ' + items.length;
+    document.querySelector('.bar').setAttribute('aria-valuenow', n);
+  }
+  progress();
+  document.getElementById('reset-check').addEventListener('click', function () {
+    checked = []; store.del(CK);
+    cl.querySelectorAll('input').forEach(function (i) { i.checked = false; });
+    progress();
+  });
+
+  // ---- Arbetsblad ----
+  var WK = 'lbg-forandring-ws';
+  var data = store.get(WK) || {};
+  var tbody = document.getElementById('infl-body');
+  var levels = ['info', 'tycka', 'utforma', 'bestamma'];
+  for (var r = 0; r < 4; r++) {
+    var tr = document.createElement('tr');
+    var html = '<td><input type="text" data-k="infl' + r + '" aria-label="Fråga ' + (r + 1) + '" placeholder="Fråga ' + (r + 1) + '"></td>';
+    levels.forEach(function (lv) {
+      html += '<td><input type="radio" name="infl' + r + 'lvl" value="' + lv + '" data-k="infl' + r + 'lvl" aria-label="' + lv + ' för fråga ' + (r + 1) + '"></td>';
+    });
+    tr.innerHTML = html;
+    tbody.appendChild(tr);
+  }
+  var ws = document.getElementById('ws');
+  var savedEl = document.getElementById('saved');
+  ws.querySelectorAll('[data-k]').forEach(function (el) {
+    var k = el.getAttribute('data-k');
+    if (el.type === 'radio') { if (data[k] === el.value) el.checked = true; }
+    else if (data[k]) el.value = data[k];
+  });
+  var t;
+  ws.addEventListener('input', function (e) {
+    var el = e.target, k = el.getAttribute('data-k');
+    if (!k) return;
+    data[k] = el.value;
+    clearTimeout(t);
+    t = setTimeout(function () { savedEl.textContent = store.set(WK, data) ? 'Sparat i din webbläsare' : ''; }, 400);
+  });
+  ws.addEventListener('change', function (e) {
+    var el = e.target, k = el.getAttribute('data-k');
+    if (el.type === 'radio' && k) { data[k] = el.value; store.set(WK, data); }
+  });
+  document.getElementById('clear-ws').addEventListener('click', function () {
+    if (!confirm('Vill du tömma arbetsbladet? Det går inte att ångra.')) return;
+    data = {}; store.del(WK); ws.reset(); savedEl.textContent = 'Arbetsbladet är tomt';
+  });
+  document.getElementById('print-ws').addEventListener('click', function () {
+    document.body.classList.add('print-ws');
+    window.print();
+  });
+  window.addEventListener('afterprint', function () { document.body.classList.remove('print-ws'); });
+
+  // ---- Byggstensband i sidfoten ----
+  var band = document.getElementById('band');
+  var shapes = ['circle', 'leaf', 'top', 'top', 'leaf2', 'top'];
+  var colors = ['c-l', 'c-o', 'c-b', 'c-r'];
+  var cols = Math.ceil(window.innerWidth / 50) + 2;
+  for (var c = 0; c < cols; c++) {
+    var col = document.createElement('div');
+    col.className = 'col';
+    for (var rr = 0; rr < 3; rr++) {
+      var b = document.createElement('div');
+      var s = shapes[(c * 7 + rr * 3) % shapes.length];
+      b.className = 'b ' + s + ' ' + (s === 'circle' ? colors[(c + rr) % colors.length] : 'c-g');
+      b.style.setProperty('--s', '44px');
+      col.appendChild(b);
+    }
+    band.appendChild(col);
+  }
+
+  // ---- Mjuk inflygning ----
+  var els = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, { threshold: 0.08 });
+    els.forEach(function (el) { io.observe(el); });
+  } else { els.forEach(function (el) { el.classList.add('in'); }); }
+
+  // ---- Aktiv länk i menyn ----
+  var links = document.querySelectorAll('.nav a');
+  var secs = Array.prototype.map.call(links, function (a) { return document.querySelector(a.getAttribute('href')); });
+  window.addEventListener('scroll', function () {
+    var y = window.scrollY + 120, active = -1;
+    secs.forEach(function (s, i) { if (s && s.offsetTop <= y) active = i; });
+    links.forEach(function (a, i) {
+      var on = i === active;
+      if (on && !a.classList.contains('active')) {
+        var nav = a.parentElement;
+        nav.scrollTo({ left: a.offsetLeft - nav.clientWidth / 2 + a.offsetWidth / 2 });
+      }
+      a.classList.toggle('active', on);
+    });
+  }, { passive: true });
+})();
+</script>
+</body>
+</html>
